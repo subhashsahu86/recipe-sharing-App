@@ -24,13 +24,14 @@ public class RecipeServiceImpl implements IRecipeService {
 	public Recipe createRecipe(Recipe recipe, User user) {
 
 		Recipe createNewRecipe = new Recipe();
-		System.out.println("RecipeServiceImpl.createRecipe()");
-		createNewRecipe.setTitle(createNewRecipe.getTitle());
-		createNewRecipe.setImage(createNewRecipe.getImage());
-		createNewRecipe.setIsVagitarian(createNewRecipe.getIsVagitarian());
-		createNewRecipe.setDiscription(createNewRecipe.getDiscription());
+		createNewRecipe.setTitle(recipe.getTitle());
+		createNewRecipe.setImage(recipe.getImage());
+		createNewRecipe.setIsVagitarian(recipe.getIsVagitarian());
+		createNewRecipe.setDiscription(recipe.getDiscription());
 		createNewRecipe.setUser(user);
 		createNewRecipe.setCreatedAt(LocalDateTime.now());
+		
+		System.out.println(createNewRecipe);
 		
 		return recipeRepo.save(createNewRecipe);
 	}
@@ -61,11 +62,11 @@ public class RecipeServiceImpl implements IRecipeService {
 	public Recipe updateRecipe(Recipe recipe, Long id) throws Exception {
          
 		Recipe oldRecipe = findRecipeById(id);
-		
+
 		if(recipe.getTitle() !=null) {
 			oldRecipe.setTitle(recipe.getTitle());
 		}
-		
+
 		if(recipe.getDiscription() !=null) {
 			oldRecipe.setDiscription(recipe.getDiscription());
 		}
@@ -96,7 +97,7 @@ public class RecipeServiceImpl implements IRecipeService {
 		else {
 			recipe.getLikes().add(user.getUserId());
 		}
-		return null;
+		return recipeRepo.save(recipe);
 	}
 
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.subh.entity.Recipe;
@@ -17,6 +18,7 @@ import com.subh.service.RecipeServiceImpl;
 import com.subh.service.UserServiceImpl;
 
 @RestController
+@RequestMapping("/api/recipes")
 public class RecipeController {
 	
 	@Autowired
@@ -25,10 +27,9 @@ public class RecipeController {
 	@Autowired
 	private UserServiceImpl userService;
 	 
-	@PostMapping("/api/recipe/user/{userId}")
-	public Recipe createRecipe(@RequestBody Recipe recipe, @PathVariable Long userId) throws Exception {
+	@PostMapping("/user/{userId}")
+	public Recipe createRecipe(@RequestBody Recipe recipe,@PathVariable Long userId) throws Exception {
 		
-	    System.out.println("RecipeController.createRecipe()");
 		
 		User user = userService.findUserById(userId);
 		
@@ -37,7 +38,7 @@ public class RecipeController {
 		return createdRecipe;
 	}
 	
-	@GetMapping("/api/recipes")
+	@GetMapping()
 	public List<Recipe> getAllRecipe(){
 		
 		List<Recipe> recipes = recipeService.findAllRecipe();
@@ -45,7 +46,7 @@ public class RecipeController {
 		return recipes;
 	}
 	
-	@DeleteMapping("/api/recipe/{recipeId}")
+	@DeleteMapping("/{recipeId}")
 	public String deleteRecipe(@PathVariable Long recipeId) throws Exception {
 		
 		recipeService.deleteRecipe(recipeId);
@@ -53,8 +54,8 @@ public class RecipeController {
 		return "Recipe Deleted Successfully";
 	}
 	
-	@PutMapping("/api/recipe/{recipeId}")
-	public Recipe updateRecipe(Recipe recipe , @PathVariable Long recipeId) throws Exception {
+	@PutMapping("/{recipeId}")
+	public Recipe updateRecipe(@RequestBody Recipe recipe , @PathVariable Long recipeId) throws Exception {
 		
 		Recipe updatedRecipe = recipeService.updateRecipe(recipe, recipeId);
 		
@@ -62,7 +63,7 @@ public class RecipeController {
 		
 	}
 	
-	@PutMapping("/api/recipe/{recipeId}/user/{userId}")
+	@PutMapping("/like/{recipeId}/user/{userId}")
 	public Recipe likeRecipe( @PathVariable Long recipeId, 
 			                  @PathVariable Long userId) throws Exception {
 		
